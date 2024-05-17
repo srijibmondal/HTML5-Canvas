@@ -1,13 +1,13 @@
+const canvas = document.querySelector("#canvas");
 window.addEventListener("load", () => {
-  const canvas = document.querySelector("#canvas");
   const context = canvas.getContext("2d");
-  const scale = window.devicePixelRatio || 5;
+  const scale = window.devicePixelRatio || 1;
   // adjusting the size of the canvas using js instade of css
   //because it(css) causes the canvas zoomed in and pixeletedF
   canvas.height = (window.innerHeight - 6) * scale;
   canvas.width = (window.innerWidth - 200) * scale;
   context.scale(scale, scale);
-  console.log(canvas.innerHeight);
+  // console.log(canvas.innerHeight);
 
   let painting = false;
 
@@ -21,17 +21,17 @@ window.addEventListener("load", () => {
   }
   function draw(e) {
     if (!painting) return;
-    context.lineWidth = 3;
+    context.lineWidth = 2;
     context.lineCap = "round";
-    // context.lineJoin= "round";
+    context.lineJoin = "bevel";
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
-    context.filter = "blur(1px)";
+    context.filter = "blur(.7px)";
     context.lineTo(e.clientX, e.clientY);
-    context.strokeStyle = "red";
     context.stroke();
-    // context.save();
-    console.log(context);
+    context.strokeStyle= "#ccc"
+    context.save();
+    // console.log(context);
   }
   canvas.addEventListener("mousedown", startPosition);
   canvas.addEventListener("mouseup", endPosition);
@@ -42,4 +42,15 @@ window.addEventListener("load", () => {
 window.addEventListener("resize", () => {
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth;
+});
+const dwnld__btn = document.querySelector("#download__btn");
+
+dwnld__btn.addEventListener("click", () => {
+  const uri = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.download = "image.png";
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 });
